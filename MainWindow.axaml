@@ -1,0 +1,57 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="demkaV130126.MainWindow"
+        x:CompileBindings="False"
+        Title="demkaV130126">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="*, *, *" Margin="10">
+            <TextBox Watermark="Введите для поиска" Width="400" Grid.Column="0" x:Name="SearchTextBox" TextChanging="SearchTextBox_OnTextChanging"/>
+            <ComboBox Grid.Column="1" PlaceholderText="Сортировка" x:Name="SortComboBox" SelectionChanged="SortComboBox_OnSelectionChanged">
+                <ComboBoxItem>Сброс</ComboBoxItem>
+                <ComboBoxItem>Наименование(возрастание)</ComboBoxItem>
+                <ComboBoxItem>Наименование(убывание)</ComboBoxItem>
+                <ComboBoxItem>Номер цеха(возрастание)</ComboBoxItem>
+                <ComboBoxItem>Номер цеха(убывание)</ComboBoxItem>
+                <ComboBoxItem>Минимальная стоимость(возрастание)</ComboBoxItem>
+                <ComboBoxItem>Минимальная стоимость(убывание)</ComboBoxItem>
+            </ComboBox>
+            <ComboBox Grid.Column="2" PlaceholderText="Фильтрация" x:Name="FilterComboBox" SelectionChanged="FilterComboBox_OnSelectionChanged"/>
+        </Grid>
+        <Border DockPanel.Dock="Top">
+            <ListBox x:Name="ProductsList" SelectionMode="Multiple">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border>
+                            <Grid ColumnDefinitions="*, *, *">
+                                <StackPanel Grid.Column="0">
+                                    <Image Source="{Binding ImageBitmap}" Height="100" Width="80"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{Binding Producttype.Title}"/>
+                                    <TextBlock Text="{Binding Title}"/>
+                                    <TextBlock Text="{Binding Articlenumber}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="{Binding Mincostforagent}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Изменить стоимость на ..." Click="UpdateMinCostSelectedProducts"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+        </Border>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Stretch" Height="50" Background="Black" VerticalAlignment="Bottom">
+            <Button x:Name="PreviousButton" Content="Предыдущая" Click="PreviousPage" Margin="5" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="CurrentPageTextBlock" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button x:Name="NextButton" Content="Следующая" Click="NextPage" Margin="5" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </DockPanel>
+</Window>
