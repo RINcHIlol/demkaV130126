@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using demkaV130126.Models;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         using var ctx = new DatabaseContext();
-        dataSourseProducts = ctx.Products.Include(x => x.Producttype).Include(x => x.ProductMaterials).ToList();
+        dataSourseProducts = ctx.Products.Include(p => p.Producttype).Include(p => p.ProductMaterials).ThenInclude(pm => pm.Material).ToList();
         foreach (var product in dataSourseProducts)
         {
             if (product.Image == "")
@@ -153,6 +154,41 @@ public partial class MainWindow : Window
                 original.Mincostforagent = updatedProduct.Mincostforagent;
             }
         }
+        Display();
+    }
+    
+    private void ProductsList_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        int count = ProductsList.SelectedItems.Count;
+
+        UpdateMenuItem.IsEnabled = count == 1;
+    }
+
+    private async void UpdateProduct_OnClick(object? sender, RoutedEventArgs e)
+    {
+        using var ctx = new DatabaseContext();
+        if (ProductsList.SelectedItem is not Product selectedProduct) return;
+        
+        AddUpdateProduct addUpdateProduct = new AddUpdateProduct(selectedProduct);
+        var newProduct = await addUpdateProduct.ShowDialog<Product>(this);
+        var oldProduct = dataSourseProducts.FirstOrDefault(a => a.Id == newProduct.Id);
+        if (oldProduct != null)
+        {
+            dataSourseProducts.Remove(oldProduct);
+            var newnewProduct = ctx.Products.Include(p => p.Producttype).Include(p => p.ProductMaterials).ThenInclude(pm => pm.Material).FirstOrDefault(a => a.Id == newProduct.Id);
+            dataSourseProducts.Add(newnewProduct);
+        }
+        Display();
+    }
+
+    private async void AddButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        using var ctx = new DatabaseContext();
+
+        AddUpdateProduct addUpdateProduct = new AddUpdateProduct(null);
+        var newProduct = await addUpdateProduct.ShowDialog<Product>(this);
+        var newnewProduct = ctx.Products.Include(p => p.Producttype).Include(p => p.ProductMaterials).ThenInclude(pm => pm.Material).FirstOrDefault(a => a.Id == newProduct.Id);
+        dataSourseProducts.Add(newnewProduct);
         Display();
     }
 }

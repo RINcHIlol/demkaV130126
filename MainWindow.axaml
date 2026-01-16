@@ -7,8 +7,8 @@
         x:CompileBindings="False"
         Title="demkaV130126">
     <DockPanel>
-        <Grid DockPanel.Dock="Top" ColumnDefinitions="*, *, *" Margin="10">
-            <TextBox Watermark="Введите для поиска" Width="400" Grid.Column="0" x:Name="SearchTextBox" TextChanging="SearchTextBox_OnTextChanging"/>
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="*, *, *, *" Margin="3">
+            <TextBox Watermark="Введите для поиска" Width="200" Grid.Column="0" x:Name="SearchTextBox" TextChanging="SearchTextBox_OnTextChanging"/>
             <ComboBox Grid.Column="1" PlaceholderText="Сортировка" x:Name="SortComboBox" SelectionChanged="SortComboBox_OnSelectionChanged">
                 <ComboBoxItem>Сброс</ComboBoxItem>
                 <ComboBoxItem>Наименование(возрастание)</ComboBoxItem>
@@ -19,9 +19,10 @@
                 <ComboBoxItem>Минимальная стоимость(убывание)</ComboBoxItem>
             </ComboBox>
             <ComboBox Grid.Column="2" PlaceholderText="Фильтрация" x:Name="FilterComboBox" SelectionChanged="FilterComboBox_OnSelectionChanged"/>
+            <Button Grid.Column="3" Content="Добавить" Click="AddButton_OnClick"/>
         </Grid>
         <Border DockPanel.Dock="Top">
-            <ListBox x:Name="ProductsList" SelectionMode="Multiple">
+            <ListBox x:Name="ProductsList" SelectionMode="Multiple" SelectionChanged="ProductsList_OnSelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border>
@@ -29,13 +30,14 @@
                                 <StackPanel Grid.Column="0">
                                     <Image Source="{Binding ImageBitmap}" Height="100" Width="80"/>
                                 </StackPanel>
-                                <StackPanel Grid.Column="1">
+                                <StackPanel Grid.Column="1" Width="700">
                                     <TextBlock Text="{Binding Producttype.Title}"/>
                                     <TextBlock Text="{Binding Title}"/>
                                     <TextBlock Text="{Binding Articlenumber}"/>
+                                    <TextBlock Text="{Binding MaterialsLine}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2">
-                                    <TextBlock Text="{Binding Mincostforagent}"/>
+                                    <TextBlock Text="{Binding Mincostforagent}" Margin="100,0,0,0"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -44,6 +46,7 @@
                 <ListBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Изменить стоимость на ..." Click="UpdateMinCostSelectedProducts"/>
+                        <MenuItem Header="Изменить" x:Name="UpdateMenuItem" Click="UpdateProduct_OnClick"/>
                     </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>

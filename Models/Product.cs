@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Media.Imaging;
 
 namespace demkaV130126.Models;
@@ -24,6 +25,20 @@ public partial class Product
     public int? Productionworkshopnumber { get; set; }
 
     public decimal Mincostforagent { get; set; }
+    
+    public string MaterialsLine
+    {
+        get
+        {
+            if (ProductMaterials == null)
+                return string.Empty;
+
+            return string.Join(", ",
+                ProductMaterials
+                    .Where(pm => pm.Material != null)
+                    .Select(pm => pm.Material.Title));
+        }
+    }
     
     public virtual ICollection<ProductCostHistory> ProductCostHistories { get; set; } = new List<ProductCostHistory>();
 

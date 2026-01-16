@@ -1,0 +1,46 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="demkaV130126.AddUpdateProduct"
+        x:CompileBindings="False"
+        Title="AddUpdateProduct">
+    <Grid ColumnDefinitions="*, *">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
+            <TextBox x:Name="ArticulBox" Watermark="Артикул" Width="200" Margin="5"/>
+            <ComboBox VerticalAlignment="Center" x:Name="TypeProductCombobox" SelectionChanged="TypeProductCombobox_OnSelectionChanged" Width="200" Margin="5">
+                <ComboBoxItem Content="Три слоя"/>
+                <ComboBoxItem Content="Два слоя"/>
+                <ComboBoxItem Content="Детская"/>
+                <ComboBoxItem Content="Супер мягкая"/>
+                <ComboBoxItem Content="Один слой"/>
+            </ComboBox>
+            <TextBox x:Name="TitleBox" Watermark="Название" Width="200" Margin="5"/>
+            <TextBox x:Name="CountPersonBox" Watermark="Количество чел." Width="200" Margin="5"/>
+            <TextBox x:Name="WorkShopNumberBox" Watermark="Номер цеха" Width="200" Margin="5"/>
+            <TextBox x:Name="MinCostBox" Watermark="Мин. стоимость" Width="200" Margin="5"/>
+            <TextBox x:Name="DescriptionBox" Watermark="Описание" Width="200" Margin="5"/>
+            <Image Width="120" Height="120" x:Name="LogoImage"/>
+            <Button x:Name="SelectImageButton" Content="Выбрать изображение" Click="SelectImage" Width="200" Margin="5"/>
+            <Button x:Name="DoneButton" Content="Готово" Click="DoneButton_OnClick" Width="200" Margin="5"/>
+            <TextBlock x:Name="ErrorTextBlock" IsVisible="False" Foreground="Red"/>
+        </StackPanel>
+        <ListBox x:Name="MaterialsList" Grid.Column="1">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <Grid ColumnDefinitions="*, *">
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding Title}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <NumericUpDown Minimum="0" Maximum="1000" Value="{Binding Quantity, Mode=TwoWay}"/>
+                            </StackPanel>
+                           </Grid> 
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
